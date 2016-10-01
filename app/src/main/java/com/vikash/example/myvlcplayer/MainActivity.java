@@ -1,14 +1,18 @@
 package com.vikash.example.myvlcplayer;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import org.videolan.libvlc.IVideoPlayer;
 import org.videolan.libvlc.LibVLC;
@@ -32,30 +36,17 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, IV
     private int mVideoWidth;
     private int mVideoHeight;
     private final static int VideoSizeChanged = -1;
-    private String videoPath;
+    private ProgressBar mSpinner;
+    private String videoPath="https://archive.org/download/Popeye_forPresident/Popeye_forPresident_512kb.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // VLC
         mSurface = (SurfaceView) findViewById(R.id.vlc_surface);
-        videoPath= null;
-        File file = new File("/vendor/etc/url"); //for ex foo.txt
-        FileReader reader = null;
-        try {
-            reader = new FileReader(file);
-            char[] chars = new char[(int) file.length()];
-            reader.read(chars);
-            videoPath = new String(chars);
-            reader.close();
-        }
-        catch (Exception e){
-            Log.v("MyVlc", "Cant read url kalrav");
-        }
-
-        Log.v("myVlc","vido path :"+videoPath);
+        mSpinner = (ProgressBar) findViewById(R.id.spinner);
+        mSpinner.setVisibility(View.VISIBLE);
         playMovie();
 
     }
@@ -107,6 +98,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, IV
                                int width, int height) {
         if (libvlc != null)
             libvlc.attachSurface(surfaceholder.getSurface(), this);
+        new Handler().postDelayed(new Runnable() {
+             @Override
+            public void run() {
+             mSpinner.setVisibility(View.GONE);
+            }
+        }, 2000);
+
     }
 
     public void surfaceDestroyed(SurfaceHolder surfaceholder) {
@@ -156,11 +154,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, IV
                                int visible_height, int sar_num, int sar_den) {
     }
 
-    /**
-     * **********
-     * Player
-     * ***********
-     */
 
     private void createPlayer(String media) {
         releasePlayer();
