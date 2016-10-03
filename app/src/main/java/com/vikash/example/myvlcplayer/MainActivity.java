@@ -48,7 +48,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, IV
         mSpinner = (ProgressBar) findViewById(R.id.spinner);
         mSpinner.setVisibility(View.VISIBLE);
         playMovie();
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSpinner.setVisibility(View.GONE);
+            }
+        }, 2000);
     }
 
 
@@ -98,13 +103,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, IV
                                int width, int height) {
         if (libvlc != null)
             libvlc.attachSurface(surfaceholder.getSurface(), this);
-        new Handler().postDelayed(new Runnable() {
-             @Override
-            public void run() {
-             mSpinner.setVisibility(View.GONE);
-            }
-        }, 2000);
-
     }
 
     public void surfaceDestroyed(SurfaceHolder surfaceholder) {
