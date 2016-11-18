@@ -7,5 +7,7 @@ LibVLC can be also added by using below dependency in gradle
 gradle dependency (It may not be updated )
 compile "de.mrmaffen:vlc-android-sdk:1.9.8" 
 
+Note: this application supports armeabi-v7a devices only
+
 To use letest LibVlc compile if from official website.
 Steps to compile LibVlc https://wiki.videolan.org/AndroidCompile
